@@ -32,3 +32,56 @@ Runner/GeneratedPluginRegistrant.*
 !default.mode2v3
 !default.pbxuser
 !default.perspectivev3
+
+# Additional directories to ignore for Flutter and Dart
+.ci/
+.idea/
+.packages
+.flutter-versions
+
+# Android specific
+/android/key.properties
+/android/local.properties
+/android/.gradle/
+/android/app/build/
+/android/.cxx/
+
+# iOS specific
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Pods/
+/ios/.symlinks/
+/ios/Flutter/Flutter.framework/
+/ios/Flutter/Flutter.podspec
+ios/Runner.xcworkspace/
+ios/Runner/GeneratedPluginRegistrant.*
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/.generated/
+ios/Flutter/*.h
+ios/Flutter/*.m
+ios/Flutter/*.podspec
+
+# macOS specific
+macos/Flutter/Flutter.podspec
+macos/Pods/
+/macos/.symlinks/
+/macos/Flutter/ephemeral/
+
+# Windows specific
+/windows/flutter/ephemeral/
+
+# Linux specific
+/linux/flutter/ephemeral/
+
+# Web specific
+/web/.dart_tool/
+/web/.flutter-plugins-dependencies
+/web/.flutter-plugins
+
+# VSCode specific
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+
