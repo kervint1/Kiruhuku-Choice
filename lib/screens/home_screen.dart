@@ -30,12 +30,14 @@ class HomeScreen extends StatelessWidget {
       height: screenHeight * 0.39,
       width: double.infinity,
       alignment: Alignment.center,
-      child: Text(
-        "Map",
-        style: GoogleFonts.notoSansJp(
-            textStyle: const TextStyle(color: Colors.black, fontSize: 24)),
-        textAlign: TextAlign.center,
-      ),
+      child: ElevatedButton(
+          onPressed: () => context.push('/choice'),
+          child: Text(
+            "Map",
+            style: GoogleFonts.notoSansJp(
+                textStyle: const TextStyle(color: Colors.black, fontSize: 24)),
+            textAlign: TextAlign.center,
+          )),
     );
 
     final registerCon = Container(
