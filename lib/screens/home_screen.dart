@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,8 +13,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _cityController = TextEditingController();
-  GoogleMapController? _mapController;
-  final LatLng _initialPosition = const LatLng(35.681236, 139.767125); // 東京駅
+  final LatLng _initialPosition = LatLng(35.681236, 139.767125); // 東京駅
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +44,33 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           SizedBox(
             height: screenHeight * 0.3,
-            child: GoogleMap(
-              initialCameraPosition: CameraPosition(
-                target: _initialPosition,
+            child: FlutterMap(
+              options: MapOptions(
+                center: _initialPosition,
                 zoom: 14.0,
               ),
-              onMapCreated: (controller) {
-                _mapController = controller;
-              },
-              myLocationEnabled: true,
+              children: [
+                TileLayer(
+                  urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  subdomains: ['a', 'b', 'c'],
+                ),
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      width: 80.0,
+                      height: 80.0,
+                      point: _initialPosition,
+                      builder: (ctx) => Container(
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Icon(Icons.location_pin, color: Colors.white, size: 40),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 20),
