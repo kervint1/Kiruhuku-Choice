@@ -15,6 +15,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   LatLng _currentPosition = LatLng(35.681236, 139.767125); // 東京駅
   String _cityName = "";
+  String _selectedSeason = "春"; // デフォルトの季節
+
+  final List<String> seasons = ["春", "夏", "秋", "冬"];
 
   // マーカーの位置に基づいて都市名を取得
   Future<void> _getCityNameFromCoordinates() async {
@@ -26,11 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks.first;
-
-        // 区名を取得し、必要な部分を抽出
         String cityName = place.locality ?? place.subLocality ?? "";
 
-        // 'City'を削除する処理
         if (cityName.endsWith('City')) {
           cityName = cityName.replaceAll(' City', '');
         }
@@ -94,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ClipRRect(
             borderRadius: BorderRadius.circular(20.0), // 角を丸くする半径
             child: SizedBox(
-              height: screenHeight * 0.3,
+              height: screenHeight * 0.25,
               child: FlutterMap(
                 options: MapOptions(
                   initialCenter: _currentPosition,
@@ -103,7 +103,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     setState(() {
                       _currentPosition = point;
                     });
-                    // 都市名を更新
                     await _getCityNameFromCoordinates();
                   },
                 ),
@@ -130,10 +129,25 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(height: 20),
+          DropdownButton<String>(
+            value: _selectedSeason,
+            items: seasons.map((String season) {
+              return DropdownMenuItem<String>(
+                value: season,
+                child: Text(season),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                _selectedSeason = newValue!;
+              });
+            },
+          ),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
               if (_cityName.isNotEmpty && _cityName != "都市名が取得できません") {
-                context.push('/choice', extra: _cityName);
+                context.push('/choice', extra: {'city': _cityName, 'season': _selectedSeason});
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('都市名が取得できませんでした')),

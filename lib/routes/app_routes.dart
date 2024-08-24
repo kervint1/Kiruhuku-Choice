@@ -16,8 +16,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/choice',
       builder: (context, state) {
-        final city = state.extra as String; // パラメータとして渡された都市名を取得
-        return ChoiceScreen(city: city);
+        final Map<String, dynamic>? extra = state.extra as Map<String, dynamic>?; // null 安全のため修正
+        final city = extra?['city'] ?? 'Unknown City'; // デフォルト値を指定
+        final season = extra?['season'] ?? 'Unknown Season'; // デフォルト値を指定
+        return ChoiceScreen(city: city, season: season);
       },
     ),
     GoRoute(
