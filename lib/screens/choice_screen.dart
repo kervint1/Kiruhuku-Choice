@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,13 +16,13 @@ class ChoiceScreen extends StatefulWidget {
 class _ChoiceScreenState extends State<ChoiceScreen> {
   String weather = "Loading...";
   String temperature = "";
-  List<Map<String, dynamic>> items = [];
+  List<Map<String, dynamic>> selectedItems = [];
 
   @override
   void initState() {
     super.initState();
     fetchWeather(widget.city);
-    fetchItemsForSeason(widget.season);
+    fetchItems();
   }
 
   Future<void> fetchWeather(String cityName) async {
@@ -49,7 +50,7 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
     }
   }
 
-  Future<void> fetchItemsForSeason(String season) async {
+  Future<void> fetchItems() async {
     // 仮のデータとして JSON データを使っています。実際には、API からデータを取得するなどして、下記のようなアイテムのリストを取得することを想定しています。
     final List<Map<String, dynamic>> allItems = [
       {'type': 'トップス', 'season': '春', 'imagePath': 'https://example.com/image1.jpg'},
@@ -59,11 +60,13 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
       {'type': 'シューズ', 'season': '春', 'imagePath': 'https://example.com/image5.jpg'},
       {'type': 'アクセサリー', 'season': '春', 'imagePath': 'https://example.com/image6.jpg'},
       {'type': 'バッグ', 'season': '春', 'imagePath': 'https://example.com/image7.jpg'},
-      // 追加のアイテム
     ];
 
-    // 指定された季節に合うアイテムをフィルタリングします
-    final filteredItems = allItems.where((item) => item['season'] == season).toList();
+    final filteredItems = allItems.where((item) {
+      return item['season'] == widget.season;
+    }).toList();
+
+    final random = Random();
 
     // 各カテゴリからランダムに1つのアイテムを選択します
     final categories = ['トップス', 'パンツ', 'ジャケット・アウター', '靴下', 'シューズ', 'アクセサリー', 'バッグ'];
@@ -72,13 +75,18 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
     for (var category in categories) {
       final itemsInCategory = filteredItems.where((item) => item['type'] == category).toList();
       if (itemsInCategory.isNotEmpty) {
-        selectedItems.add(itemsInCategory[0]); // 最初のアイテムを選択します
+        final randomIndex = random.nextInt(itemsInCategory.length);
+        selectedItems.add(itemsInCategory[randomIndex]); // ランダムなアイテムを選択します
       }
     }
 
     setState(() {
-      items = selectedItems;
+      this.selectedItems = selectedItems;
     });
+  }
+
+  void _reselectItems() {
+    fetchItems();
   }
 
   @override
@@ -116,25 +124,33 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
                 ],
               ),
             ),
-            ...items.map((item) => Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item['type'],
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 150, // 画像の高さを調整
-                    child: Image.network(
+            ...selectedItems.map((item) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Text(
+                      item['type'],
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    Image.network(
                       item['imagePath'],
+                      width: double.infinity,
+                      height: 200,
                       fit: BoxFit.cover,
                     ),
-                  ),
-                ],
+                  ],
+                ),
+              );
+            }).toList(),
+            const SizedBox(height: 20),
+            Center(
+              child: ElevatedButton(
+                onPressed: _reselectItems,
+                child: const Text('再チョイス'),
               ),
-            )).toList(),
+            ),
+            const SizedBox(height: 20),
           ],
         ),
       ),
