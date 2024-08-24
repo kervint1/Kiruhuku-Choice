@@ -24,25 +24,6 @@ class HomeScreen extends StatelessWidget {
       ),
     );
 
-    final history = InkWell(
-      onTap: () {
-        context.go('/history');
-      },
-      child: Container(
-        decoration: const BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.black, width: 2))),
-        height: screenHeight * 0.15,
-        width: double.infinity,
-        alignment: Alignment.center,
-        child: Text(
-          "履歴",
-          style: GoogleFonts.notoSansJp(
-              textStyle: const TextStyle(color: Colors.black, fontSize: 24)),
-          textAlign: TextAlign.center,
-        ),
-      ),
-    );
-
     final map_con = Container(
       decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.black, width: 2))),
@@ -74,7 +55,7 @@ class HomeScreen extends StatelessWidget {
     final allObject = Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
-        children: [title, history, map_con, register_con]);
+        children: [title, map_con, register_con]);
 
     final body = Container(
       decoration: const BoxDecoration(
@@ -84,7 +65,18 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-            toolbarHeight: screenHeight * 0.1, title: const Text('着る服チョイス')),
+          toolbarHeight: screenHeight * 0.1,
+          title: const Text('着る服チョイス'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.history),
+              onPressed: () {
+                context.push('/history');
+              },
+              iconSize: 50,
+            ),
+          ],
+        ),
         backgroundColor: Colors.white,
         body: body);
   }
