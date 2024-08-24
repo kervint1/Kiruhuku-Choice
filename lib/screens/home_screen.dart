@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,6 +12,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _cityController = TextEditingController();
+  GoogleMapController? _mapController;
+  final LatLng _initialPosition = const LatLng(35.681236, 139.767125); // 東京駅
 
   @override
   Widget build(BuildContext context) {
@@ -39,16 +42,18 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          TextField(
-            controller: _cityController,
-            decoration: InputDecoration(
-              hintText: '都市名を入力してください',
-              border: OutlineInputBorder(),
+          SizedBox(
+            height: screenHeight * 0.3,
+            child: GoogleMap(
+              initialCameraPosition: CameraPosition(
+                target: _initialPosition,
+                zoom: 14.0,
+              ),
+              onMapCreated: (controller) {
+                _mapController = controller;
+              },
+              myLocationEnabled: true,
             ),
-            style: GoogleFonts.notoSansJp(
-              textStyle: const TextStyle(fontSize: 24),
-            ),
-            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 20),
           ElevatedButton(
