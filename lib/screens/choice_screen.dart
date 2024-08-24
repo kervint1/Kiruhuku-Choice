@@ -4,8 +4,9 @@ import 'package:http/http.dart' as http;
 
 class ChoiceScreen extends StatefulWidget {
   final String city;
+  final String season;
 
-  const ChoiceScreen({super.key, required this.city});
+  const ChoiceScreen({super.key, required this.city, required this.season});
 
   @override
   _ChoiceScreenState createState() => _ChoiceScreenState();
@@ -14,11 +15,13 @@ class ChoiceScreen extends StatefulWidget {
 class _ChoiceScreenState extends State<ChoiceScreen> {
   String weather = "Loading...";
   String temperature = "";
+  List<Map<String, dynamic>> items = [];
 
   @override
   void initState() {
     super.initState();
     fetchWeather(widget.city);
+    fetchItemsForSeason(widget.season);
   }
 
   Future<void> fetchWeather(String cityName) async {
@@ -46,6 +49,38 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
     }
   }
 
+  Future<void> fetchItemsForSeason(String season) async {
+    // 仮のデータとして JSON データを使っています。実際には、API からデータを取得するなどして、下記のようなアイテムのリストを取得することを想定しています。
+    final List<Map<String, dynamic>> allItems = [
+      {'type': 'トップス', 'season': '春', 'imagePath': 'https://example.com/image1.jpg'},
+      {'type': 'パンツ', 'season': '春', 'imagePath': 'https://example.com/image2.jpg'},
+      {'type': 'ジャケット・アウター', 'season': '春', 'imagePath': 'https://example.com/image3.jpg'},
+      {'type': '靴下', 'season': '春', 'imagePath': 'https://example.com/image4.jpg'},
+      {'type': 'シューズ', 'season': '春', 'imagePath': 'https://example.com/image5.jpg'},
+      {'type': 'アクセサリー', 'season': '春', 'imagePath': 'https://example.com/image6.jpg'},
+      {'type': 'バッグ', 'season': '春', 'imagePath': 'https://example.com/image7.jpg'},
+      // 追加のアイテム
+    ];
+
+    // 指定された季節に合うアイテムをフィルタリングします
+    final filteredItems = allItems.where((item) => item['season'] == season).toList();
+
+    // 各カテゴリからランダムに1つのアイテムを選択します
+    final categories = ['トップス', 'パンツ', 'ジャケット・アウター', '靴下', 'シューズ', 'アクセサリー', 'バッグ'];
+    final selectedItems = <Map<String, dynamic>>[];
+
+    for (var category in categories) {
+      final itemsInCategory = filteredItems.where((item) => item['type'] == category).toList();
+      if (itemsInCategory.isNotEmpty) {
+        selectedItems.add(itemsInCategory[0]); // 最初のアイテムを選択します
+      }
+    }
+
+    setState(() {
+      items = selectedItems;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,22 +88,53 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
         backgroundColor: Colors.white,
         title: const Text("チョイス先"),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '都市: ${widget.city}',
-              style: const TextStyle(fontSize: 20),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '都市: ${widget.city}',
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    '季節: ${widget.season}',
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    '天気: $weather',
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    '温度: $temperature',
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
             ),
-            Text(
-              '天気: $weather',
-              style: const TextStyle(fontSize: 20),
-            ),
-            Text(
-              '温度: $temperature',
-              style: const TextStyle(fontSize: 20),
-            ),
+            ...items.map((item) => Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item['type'],
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 150, // 画像の高さを調整
+                    child: Image.network(
+                      item['imagePath'],
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
+              ),
+            )).toList(),
           ],
         ),
       ),
