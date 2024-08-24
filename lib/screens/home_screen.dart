@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:go_router/go_router.dart';
-import 'package:geocoding/geocoding.dart'; // 逆ジオコーディング用
+import 'package:geocoding/geocoding.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,7 +30,7 @@ Future<void> _getCityNameFromCoordinates() async {
       // 区名を取得し、必要な部分を抽出
       String cityName = place.locality ?? place.subLocality ?? "";
 
-      // 'City'を削除する処理
+      // 'City'を削除
       if (cityName.endsWith('City')) {
         cityName = cityName.replaceAll(' City', '');
       }
