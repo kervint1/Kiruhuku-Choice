@@ -6,32 +6,62 @@ class HistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //Image.asset()写真
+
     //サンプ履歴データ
-    final List<String> historyData = [
-      '2024-08-23: 制服',
-      '2024-08-22: 青のシャツを選択',
-      '2024-08-21: 赤のスカートを選択',
-      '2024-08-20: 白のTシャツを選択',
+    final List<Map<String, String>> historyData = [
+      {
+        'date': '2024-08-23',
+        'description': '制服',
+        'image': 'assets/images/uniform.png'
+      },
     ];
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: const Text("履歴"),
       ),
-      body: ListView.builder(
+      body: GridView.builder(
+        padding: const EdgeInsets.all(10),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, // 2列
+          crossAxisSpacing: 10.0,
+          mainAxisSpacing: 10.0,
+          childAspectRatio: 0.7, // 縦横比
+        ),
         itemCount: historyData.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(
-              historyData[index],
-              style: GoogleFonts.notoSansJp(
-                textStyle: const TextStyle(fontSize: 18),
-              ),
+          return Card(
+            elevation: 5,
+            child: Column(
+              children: [
+                Expanded(
+                  child: Image.asset(
+                    historyData[index]['image']!,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                // 日付と説明を表示
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    '${historyData[index]['date']}: ${historyData[index]['description']}',
+                    style: GoogleFonts.notoSansJp(
+                      textStyle: const TextStyle(fontSize: 16),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                // 詳細ボタンを追加
+                ElevatedButton(
+                  onPressed: () {
+                    // 詳細ページへの遷移などの処理をここに記述
+                  },
+                  child: const Text('詳細'),
+                ),
+              ],
             ),
-            leading: const Icon(Icons.history),
-            onTap: () {
-              // 履歴項目がタップされたときの処理（必要に応じて追加）
-            },
           );
         },
       ),
