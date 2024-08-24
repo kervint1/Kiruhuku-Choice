@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:go_router/go_router.dart';
-import 'package:geocoding/geocoding.dart'; // 逆ジオコーディング用
+import 'package:geocoding/geocoding.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,39 +17,39 @@ class _HomeScreenState extends State<HomeScreen> {
   String _cityName = "";
 
   // マーカーの位置に基づいて都市名を取得
-Future<void> _getCityNameFromCoordinates() async {
-  try {
-    List<Placemark> placemarks = await placemarkFromCoordinates(
-      _currentPosition.latitude,
-      _currentPosition.longitude,
-    );
+  Future<void> _getCityNameFromCoordinates() async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        _currentPosition.latitude,
+        _currentPosition.longitude,
+      );
 
-    if (placemarks.isNotEmpty) {
-      Placemark place = placemarks.first;
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks.first;
 
-      // 区名を取得し、必要な部分を抽出
-      String cityName = place.locality ?? place.subLocality ?? "";
+        // 区名を取得し、必要な部分を抽出
+        String cityName = place.locality ?? place.subLocality ?? "";
 
-      // 'City'を削除する処理
-      if (cityName.endsWith('City')) {
-        cityName = cityName.replaceAll(' City', '');
+        // 'City'を削除する処理
+        if (cityName.endsWith('City')) {
+          cityName = cityName.replaceAll(' City', '');
+        }
+
+        setState(() {
+          _cityName = cityName;
+        });
+      } else {
+        setState(() {
+          _cityName = "都市名が見つかりません";
+        });
       }
-
+    } catch (e) {
       setState(() {
-        _cityName = cityName;
+        _cityName = "エラー: 都市名を取得できませんでした";
       });
-    } else {
-      setState(() {
-        _cityName = "都市名が見つかりません";
-      });
+      print("逆ジオコーディングエラー: $e");
     }
-  } catch (e) {
-    setState(() {
-      _cityName = "エラー: 都市名を取得できませんでした";
-    });
-    print("逆ジオコーディングエラー: $e");
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -91,39 +91,42 @@ Future<void> _getCityNameFromCoordinates() async {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            height: screenHeight * 0.3,
-            child: FlutterMap(
-              options: MapOptions(
-                initialCenter: _currentPosition,
-                initialZoom: 10.0,
-                onTap: (tapPosition, point) async {
-                  setState(() {
-                    _currentPosition = point;
-                  });
-                  // 都市名を更新
-                  await _getCityNameFromCoordinates();
-                },
-              ),
-              children: [
-                TileLayer(
-                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20.0), // 角を丸くする半径
+            child: SizedBox(
+              height: screenHeight * 0.3,
+              child: FlutterMap(
+                options: MapOptions(
+                  initialCenter: _currentPosition,
+                  initialZoom: 10.0,
+                  onTap: (tapPosition, point) async {
+                    setState(() {
+                      _currentPosition = point;
+                    });
+                    // 都市名を更新
+                    await _getCityNameFromCoordinates();
+                  },
                 ),
-                MarkerLayer(
-                  markers: [
-                    Marker(
-                      width: 80.0,
-                      height: 80.0,
-                      point: _currentPosition,
-                      child: const Icon(
-                        Icons.location_pin,
-                        color: Colors.red,
-                        size: 40,
+                children: [
+                  TileLayer(
+                    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  ),
+                  MarkerLayer(
+                    markers: [
+                      Marker(
+                        width: 80.0,
+                        height: 80.0,
+                        point: _currentPosition,
+                        child: const Icon(
+                          Icons.location_pin,
+                          color: Colors.red,
+                          size: 40,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 20),
@@ -141,14 +144,14 @@ Future<void> _getCityNameFromCoordinates() async {
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
             ),
             child: Text(
-              "表示",
+              "チョイス！",
               style: GoogleFonts.notoSansJp(
                 textStyle: const TextStyle(
                   color: Color.fromARGB(255, 70, 70, 70),
                   fontSize: 24,
                 ),
               ),
-              textAlign: TextAlign.center, // Textウィジェット内にtextAlignを適用
+              textAlign: TextAlign.center,
             ),
           ),
         ],
@@ -178,7 +181,8 @@ Future<void> _getCityNameFromCoordinates() async {
 
     final body = Container(
       decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.red, width: 2))),
+        border: Border(bottom: BorderSide(color: Colors.red, width: 2)),
+      ),
       child: allObject,
     );
 
@@ -200,9 +204,7 @@ Future<void> _getCityNameFromCoordinates() async {
               actions: [
                 IconButton(
                   icon: const Icon(Icons.history),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/history');
-                  },
+                  onPressed: () => context.push('/history'),
                   iconSize: 50,
                 ),
               ],
@@ -221,5 +223,3 @@ Future<void> _getCityNameFromCoordinates() async {
     );
   }
 }
-
-//ボタン文字の色 ARGB(255, 70, 70, 70)
