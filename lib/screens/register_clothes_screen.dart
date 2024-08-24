@@ -11,10 +11,10 @@ class RegisterClothesScreen extends StatefulWidget {
   const RegisterClothesScreen({super.key});
 
   @override
-  _RegisterClothesScreenState createState() => _RegisterClothesScreenState();
+  RegisterClothesScreenState createState() => RegisterClothesScreenState();
 }
 
-class _RegisterClothesScreenState extends State<RegisterClothesScreen> {
+class RegisterClothesScreenState extends State<RegisterClothesScreen> {
   File? _image;
   String? _selectedClothesType;
   final ImagePicker _picker = ImagePicker();
@@ -66,9 +66,8 @@ class _RegisterClothesScreenState extends State<RegisterClothesScreen> {
         await clothesDir.create(recursive: true);
       }
 
-      final String fileName = DateTime.now().millisecondsSinceEpoch.toString() +
-          '_' +
-          _image!.path.split('/').last;
+      final String fileName =
+          '${DateTime.now().millisecondsSinceEpoch}_${_image!.path.split('/').last}';
       final File savedImage =
           await _image!.copy('${clothesDir.path}/$fileName');
 
@@ -89,6 +88,8 @@ class _RegisterClothesScreenState extends State<RegisterClothesScreen> {
 
       existingData.add(newItem.toJson());
       await dataFile.writeAsString(json.encode(existingData));
+
+      debugPrint('保存されたデータ: $existingData');
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('服が正常に登録されました')),

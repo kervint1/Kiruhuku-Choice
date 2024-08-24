@@ -4,6 +4,7 @@ import 'package:kiruhuku_choice/screens/clothes_list_screen.dart';
 import 'package:kiruhuku_choice/screens/history_screen.dart';
 import 'package:kiruhuku_choice/screens/home_screen.dart';
 import 'package:kiruhuku_choice/screens/register_clothes_screen.dart';
+import 'package:kiruhuku_choice/screens/testpage.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/',
@@ -30,6 +31,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/clothesList',
       builder: (context, state) => const ClothesListScreen(),
+    ),
+    GoRoute(
+      path: '/testpage',
+      builder: (context, state) => const Testpage(),
     ),
   ],
 );
