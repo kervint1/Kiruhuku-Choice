@@ -85,7 +85,19 @@ class _HomeScreenState extends State<HomeScreen> {
         style: ElevatedButton.styleFrom(
           minimumSize: const Size(300, 250),
         ),
-        child: const Text("服登録ボタン"),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/huku_touroku-logo.png', // ロゴのパス
+              width: 100,
+              height: 100,
+            ),
+            const SizedBox(width: 8), // ロゴとテキストの間にスペースを追加
+            const Text("服登録ボタン"),
+          ],
+        ),
       ),
     );
 
