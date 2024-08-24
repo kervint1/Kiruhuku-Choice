@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiruhuku_choice/routes/app_routes.dart';
+import 'package:kiruhuku_choice/side_menu.dart';
+import 'package:lib/side_menu.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
+  //ドロワー
+  final drawer = Drawer(
+    child: SideMenu(),
+  );
 }
 
 class MyApp extends StatelessWidget {

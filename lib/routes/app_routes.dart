@@ -31,5 +31,9 @@ final GoRouter router = GoRouter(
       path: '/clothesList',
       builder: (context, state) => const ClothesListScreen(),
     ),
+    GoRoute(
+      path: '/sideMenu',
+      builder: (context, state) => const ClothesListScreen(),
+    ),
   ],
 );
