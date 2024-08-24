@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
       ),
     );
 
-    final map_con = Container(
+    final mapCon = Container(
       decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.black, width: 2))),
       height: screenHeight * 0.39,
@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
       ),
     );
 
-    final register_con = Container(
+    final registerCon = Container(
       decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.black, width: 2))),
       height: screenHeight * 0.3,
@@ -54,7 +54,7 @@ class HomeScreen extends StatelessWidget {
     final allObject = Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
-        children: [title, map_con, register_con]);
+        children: [title, mapCon, registerCon]);
 
     final body = Container(
       decoration: const BoxDecoration(
@@ -64,7 +64,9 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-            toolbarHeight: screenHeight * 0.1, title: const Text('着る服チョイス')),
+          toolbarHeight: screenHeight * 0.1,
+          title: const Text('着る服チョイス'),
+        ),
         backgroundColor: Colors.white,
         body: body);
   }

@@ -4,7 +4,6 @@ import 'package:kiruhuku_choice/routes/app_routes.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
   runApp(const MyApp());
 }
 
