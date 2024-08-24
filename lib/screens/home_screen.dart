@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final TextEditingController _cityController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
-    //全体の割合0.94まで
     double screenHeight = MediaQuery.of(context).size.height;
 
     final title = Container(
@@ -30,14 +36,42 @@ class HomeScreen extends StatelessWidget {
       height: screenHeight * 0.39,
       width: double.infinity,
       alignment: Alignment.center,
-      child: ElevatedButton(
-          onPressed: () => context.push('/choice'),
-          child: Text(
-            "Map",
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextField(
+            controller: _cityController,
+            decoration: InputDecoration(
+              hintText: '都市名を入力してください',
+              border: OutlineInputBorder(),
+            ),
             style: GoogleFonts.notoSansJp(
-                textStyle: const TextStyle(color: Colors.black, fontSize: 24)),
+              textStyle: const TextStyle(fontSize: 24),
+            ),
             textAlign: TextAlign.center,
-          )),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              final city = _cityController.text;
+              if (city.isNotEmpty) {
+                context.push('/choice', extra: city);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('都市名を入力してください')),
+                );
+              }
+            },
+            child: Text(
+              "表示",
+              style: GoogleFonts.notoSansJp(
+                textStyle: const TextStyle(color: Colors.black, fontSize: 24),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
     );
 
     final registerCon = Container(
@@ -56,9 +90,10 @@ class HomeScreen extends StatelessWidget {
     );
 
     final allObject = Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [title, mapCon, registerCon]);
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [title, mapCon, registerCon],
+    );
 
     final body = Container(
       decoration: const BoxDecoration(

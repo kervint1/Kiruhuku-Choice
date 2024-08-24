@@ -13,7 +13,10 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/choice',
-      builder: (context, state) => const ChoiceScreen(),
+      builder: (context, state) {
+        final city = state.extra as String; // パラメータとして渡された都市名を取得
+        return ChoiceScreen(city: city);
+      },
     ),
     GoRoute(
       path: '/history',
