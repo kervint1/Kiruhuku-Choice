@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ChoiceScreen extends StatefulWidget {
-  const ChoiceScreen({super.key});
+  const ChoiceScreen({super.key, required city, required season});
 
   @override
   _ChoiceScreenState createState() => _ChoiceScreenState();
