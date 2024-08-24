@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
       ),
     );
 
-    final map_con = Container(
+    final mapCon = Container(
       decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.black, width: 2))),
       height: screenHeight * 0.39,
@@ -38,24 +38,25 @@ class HomeScreen extends StatelessWidget {
       ),
     );
 
-    final register_con = Container(
+    final registerCon = Container(
       decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.black, width: 2))),
       height: screenHeight * 0.3,
       width: double.infinity,
       alignment: Alignment.center,
-      child: Text(
-        "Registerbotton",
-        style: GoogleFonts.notoSansJp(
-            textStyle: const TextStyle(color: Colors.black, fontSize: 24)),
-        textAlign: TextAlign.center,
+      child: ElevatedButton(
+        onPressed: () => context.push('/registerClothes'),
+        style: ElevatedButton.styleFrom(
+          minimumSize: const Size(300, 250),
+        ),
+        child: const Text("服登録ボタン"),
       ),
     );
 
     final allObject = Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
-        children: [title, map_con, register_con]);
+        children: [title, mapCon, registerCon]);
 
     final body = Container(
       decoration: const BoxDecoration(
@@ -64,20 +65,21 @@ class HomeScreen extends StatelessWidget {
     );
 
     return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: screenHeight * 0.1,
-          title: const Text('着る服チョイス'),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.history),
-              onPressed: () {
-                context.push('/history');
-              },
-              iconSize: 50,
-            ),
-          ],
-        ),
-        backgroundColor: Colors.white,
-        body: body);
+      appBar: AppBar(
+        toolbarHeight: screenHeight * 0.1,
+        title: const Text('着る服チョイス'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.history),
+            onPressed: () {
+              context.push('/history');
+            },
+            iconSize: 50,
+          ),
+        ],
+      ),
+      backgroundColor: Colors.white,
+      body: body,
+    );
   }
 }
