@@ -24,18 +24,24 @@ class HomeScreen extends StatelessWidget {
       ),
     );
 
+    go_choice() {
+      context.push('/choice');
+    }
+
     final map_con = Container(
       decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.black, width: 2))),
       height: screenHeight * 0.39,
       width: double.infinity,
       alignment: Alignment.center,
-      child: Text(
-        "Map",
-        style: GoogleFonts.notoSansJp(
-            textStyle: const TextStyle(color: Colors.black, fontSize: 24)),
-        textAlign: TextAlign.center,
-      ),
+      child: ElevatedButton(
+          onPressed: go_choice,
+          child:Text(
+            "Map",
+            style: GoogleFonts.notoSansJp(
+                textStyle: const TextStyle(color: Colors.black, fontSize: 24)),
+            textAlign: TextAlign.center,
+          )),
     );
 
     final register_con = Container(
