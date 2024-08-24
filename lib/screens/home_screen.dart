@@ -91,39 +91,42 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            height: screenHeight * 0.3,
-            child: FlutterMap(
-              options: MapOptions(
-                initialCenter: _currentPosition,
-                initialZoom: 10.0,
-                onTap: (tapPosition, point) async {
-                  setState(() {
-                    _currentPosition = point;
-                  });
-                  // 都市名を更新
-                  await _getCityNameFromCoordinates();
-                },
-              ),
-              children: [
-                TileLayer(
-                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20.0), // 角を丸くする半径
+            child: SizedBox(
+              height: screenHeight * 0.3,
+              child: FlutterMap(
+                options: MapOptions(
+                  initialCenter: _currentPosition,
+                  initialZoom: 10.0,
+                  onTap: (tapPosition, point) async {
+                    setState(() {
+                      _currentPosition = point;
+                    });
+                    // 都市名を更新
+                    await _getCityNameFromCoordinates();
+                  },
                 ),
-                MarkerLayer(
-                  markers: [
-                    Marker(
-                      width: 80.0,
-                      height: 80.0,
-                      point: _currentPosition,
-                      child: const Icon(
-                        Icons.location_pin,
-                        color: Colors.red,
-                        size: 40,
+                children: [
+                  TileLayer(
+                    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  ),
+                  MarkerLayer(
+                    markers: [
+                      Marker(
+                        width: 80.0,
+                        height: 80.0,
+                        point: _currentPosition,
+                        child: const Icon(
+                          Icons.location_pin,
+                          color: Colors.red,
+                          size: 40,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 20),
@@ -148,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontSize: 24,
                 ),
               ),
-              textAlign: TextAlign.center, // Textウィジェット内にtextAlignを適用
+              textAlign: TextAlign.center,
             ),
           ),
         ],
@@ -178,7 +181,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final body = Container(
       decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.red, width: 2))),
+        border: Border(bottom: BorderSide(color: Colors.red, width: 2)),
+      ),
       child: allObject,
     );
 
@@ -219,5 +223,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-//ボタン文字の色 ARGB(255, 70, 70, 70)

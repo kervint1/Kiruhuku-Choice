@@ -153,7 +153,7 @@ class RegisterClothesScreenState extends State<RegisterClothesScreen> {
           bottom: BorderSide(color: Colors.black, width: 2),
         ),
       ),
-      height: screenHeight * 0.4,
+      height: screenHeight * 0.41,
       width: double.infinity,
       alignment: Alignment.center,
       child: Padding(
