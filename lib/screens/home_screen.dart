@@ -24,9 +24,6 @@ class HomeScreen extends StatelessWidget {
       ),
     );
 
-<<<<<<< HEAD
-    final mapCon = Container(
-=======
     final history = InkWell(
       onTap: () {
         context.go('/history');
@@ -47,7 +44,6 @@ class HomeScreen extends StatelessWidget {
     );
 
     final map_con = Container(
->>>>>>> f6c16938b8a8d6b91f88ff5b2bd80fca27283359
       decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.black, width: 2))),
       height: screenHeight * 0.39,
@@ -61,7 +57,7 @@ class HomeScreen extends StatelessWidget {
       ),
     );
 
-    final registerCon = Container(
+    final register_con = Container(
       decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.black, width: 2))),
       height: screenHeight * 0.3,
@@ -78,11 +74,7 @@ class HomeScreen extends StatelessWidget {
     final allObject = Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
-<<<<<<< HEAD
-        children: [title, mapCon, registerCon]);
-=======
         children: [title, history, map_con, register_con]);
->>>>>>> f6c16938b8a8d6b91f88ff5b2bd80fca27283359
 
     final body = Container(
       decoration: const BoxDecoration(
@@ -92,9 +84,7 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          toolbarHeight: screenHeight * 0.1,
-          title: const Text('着る服チョイス'),
-        ),
+            toolbarHeight: screenHeight * 0.1, title: const Text('着る服チョイス')),
         backgroundColor: Colors.white,
         body: body);
   }
