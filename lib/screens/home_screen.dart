@@ -141,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
             ),
             child: Text(
-              "表示",
+              "チョイス！",
               style: GoogleFonts.notoSansJp(
                 textStyle: const TextStyle(
                   color: Color.fromARGB(255, 70, 70, 70),
