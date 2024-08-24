@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -23,7 +24,30 @@ class HomeScreen extends StatelessWidget {
       ),
     );
 
+<<<<<<< HEAD
     final mapCon = Container(
+=======
+    final history = InkWell(
+      onTap: () {
+        context.go('/history');
+      },
+      child: Container(
+        decoration: const BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.black, width: 2))),
+        height: screenHeight * 0.15,
+        width: double.infinity,
+        alignment: Alignment.center,
+        child: Text(
+          "履歴",
+          style: GoogleFonts.notoSansJp(
+              textStyle: const TextStyle(color: Colors.black, fontSize: 24)),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+
+    final map_con = Container(
+>>>>>>> f6c16938b8a8d6b91f88ff5b2bd80fca27283359
       decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.black, width: 2))),
       height: screenHeight * 0.39,
@@ -54,7 +78,11 @@ class HomeScreen extends StatelessWidget {
     final allObject = Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
+<<<<<<< HEAD
         children: [title, mapCon, registerCon]);
+=======
+        children: [title, history, map_con, register_con]);
+>>>>>>> f6c16938b8a8d6b91f88ff5b2bd80fca27283359
 
     final body = Container(
       decoration: const BoxDecoration(
