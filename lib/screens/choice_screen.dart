@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ChoiceScreen extends StatefulWidget {
-  const ChoiceScreen({super.key, required city, required season});
+  final String city; // ここで city を定義
+  final String season; // ここで season を定義
+
+  const ChoiceScreen({super.key, required this.city, required this.season});
 
   @override
   _ChoiceScreenState createState() => _ChoiceScreenState();
@@ -39,7 +42,7 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
         List<dynamic> data = json.decode(contents);
 
         final filteredItems = data.where((item) {
-          return item['seasons'].contains('春'); // ここで表示する季節を指定
+          return item['seasons'].contains(widget.season); // widget.season を使用
         }).toList();
 
         final random = Random();
@@ -76,14 +79,44 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // 仮の天気と温度データ
+    final String weather = '晴れ';
+    final String temperature = '25°C';
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('アイテムの選択'),
+        title: const Text('チョイスリザルト！'),
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // 都市、季節、天気、温度を表示
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '都市: ${widget.city}',
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    '季節: ${widget.season}',
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    '天気: $weather',
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    '温度: $temperature',
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+            ),
+            // カテゴリごとのアイテム表示
             ...selectedItems.entries.map((entry) {
               final category = entry.key;
               final item = entry.value;
@@ -120,7 +153,7 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
             Center(
               child: ElevatedButton(
                 onPressed: _reselectItems,
-                child: const Text('再選択'),
+                child: const Text('再チョイス！'),
               ),
             ),
             const SizedBox(height: 20),
