@@ -1,34 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HistoryScreen extends StatelessWidget {
+class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // サンプル履歴データ
-    final List<Map<String, String>> historyData = [
-      {
-        'date': '2024-08-23',
-        'description': '制服',
-        'image': 'assets/images/uniform.png'
-      },
-      {
-        'date': '2024-08-23',
-        'description': '制服',
-        'image': 'assets/images/uniform.png'
-      },
-      {
-        'date': '2024-08-23',
-        'description': '制服',
-        'image': 'assets/images/uniform.png'
-      },
-    ];
+  _HistoryScreenState createState() => _HistoryScreenState();
+}
 
+class _HistoryScreenState extends State<HistoryScreen> {
+  List<Map<String, String>> historyData = [
+    {
+      'date': '2024-08-23',
+      'description': '制服',
+      'image': 'assets/images/uniform.png'
+    },
+    {
+      'date': '2024-08-22',
+      'description': '青のシャツ',
+      'image': 'assets/images/blue_shirt.png'
+    },
+    {
+      'date': '2024-08-21',
+      'description': '赤のスカート',
+      'image': 'assets/images/red_skirt.png'
+    },
+  ];
+
+  String _selectedOrder = '新しい順';
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: const Text("履歴"),
+        actions: [
+          DropdownButton<String>(
+            value: _selectedOrder,
+            items: ['新しい順', '古い順'].map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              if (newValue != null) {
+                setState(() {
+                  _selectedOrder = newValue;
+                  _sortHistoryData();
+                });
+              }
+            },
+          ),
+        ],
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -96,5 +121,14 @@ class HistoryScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  // 履歴データを並び替えるメソッド
+  void _sortHistoryData() {
+    if (_selectedOrder == '新しい順') {
+      historyData.sort((a, b) => b['date']!.compareTo(a['date']!));
+    } else {
+      historyData.sort((a, b) => a['date']!.compareTo(b['date']!));
+    }
   }
 }
