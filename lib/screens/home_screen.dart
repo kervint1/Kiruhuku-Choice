@@ -17,39 +17,39 @@ class _HomeScreenState extends State<HomeScreen> {
   String _cityName = "";
 
   // マーカーの位置に基づいて都市名を取得
-Future<void> _getCityNameFromCoordinates() async {
-  try {
-    List<Placemark> placemarks = await placemarkFromCoordinates(
-      _currentPosition.latitude,
-      _currentPosition.longitude,
-    );
+  Future<void> _getCityNameFromCoordinates() async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        _currentPosition.latitude,
+        _currentPosition.longitude,
+      );
 
-    if (placemarks.isNotEmpty) {
-      Placemark place = placemarks.first;
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks.first;
 
-      // 区名を取得し、必要な部分を抽出
-      String cityName = place.locality ?? place.subLocality ?? "";
+        // 区名を取得し、必要な部分を抽出
+        String cityName = place.locality ?? place.subLocality ?? "";
 
-      // 'City'を削除
-      if (cityName.endsWith('City')) {
-        cityName = cityName.replaceAll(' City', '');
+        // 'City'を削除する処理
+        if (cityName.endsWith('City')) {
+          cityName = cityName.replaceAll(' City', '');
+        }
+
+        setState(() {
+          _cityName = cityName;
+        });
+      } else {
+        setState(() {
+          _cityName = "都市名が見つかりません";
+        });
       }
-
+    } catch (e) {
       setState(() {
-        _cityName = cityName;
+        _cityName = "エラー: 都市名を取得できませんでした";
       });
-    } else {
-      setState(() {
-        _cityName = "都市名が見つかりません";
-      });
+      print("逆ジオコーディングエラー: $e");
     }
-  } catch (e) {
-    setState(() {
-      _cityName = "エラー: 都市名を取得できませんでした";
-    });
-    print("逆ジオコーディングエラー: $e");
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -200,9 +200,7 @@ Future<void> _getCityNameFromCoordinates() async {
               actions: [
                 IconButton(
                   icon: const Icon(Icons.history),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/history');
-                  },
+                  onPressed: () => context.push('/history'),
                   iconSize: 50,
                 ),
               ],
