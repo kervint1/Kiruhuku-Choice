@@ -93,3 +93,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+  assets:
+    - assets/images/huku_touroku-logo.png
+    - assets/images/huku_title.png
