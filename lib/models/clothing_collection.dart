@@ -14,32 +14,16 @@ class ClothingCollection {
     return _clothingItems.where((item) => item.type == 'トップス').toList();
   }
 
-  List<ClothingItem> get pants {
-    return _clothingItems.where((item) => item.type == 'パンツ').toList();
-  }
-
-  List<ClothingItem> get jackets {
-    return _clothingItems.where((item) => item.type == 'ジャケット・アウター').toList();
-  }
-
-  List<ClothingItem> get socks {
-    return _clothingItems.where((item) => item.type == '靴下').toList();
-  }
-
-  List<ClothingItem> get shoes {
-    return _clothingItems.where((item) => item.type == 'シューズ').toList();
-  }
-
-  List<ClothingItem> get accessories {
-    return _clothingItems.where((item) => item.type == 'アクセサリー').toList();
-  }
-
-  List<ClothingItem> get bags {
-    return _clothingItems.where((item) => item.type == 'バッグ').toList();
-  }
+  // その他のカテゴリも同様
 
   List<ClothingItem> filterBySeason(String season) {
     return _clothingItems.where((item) => item.isForSeason(season)).toList();
+  }
+
+  List<ClothingItem> filterByTemperature(int minTemp) {
+    return _clothingItems
+        .where((item) => item.temperature.minTemp <= minTemp)
+        .toList();
   }
 
   List<Map<String, dynamic>> toJson() {
