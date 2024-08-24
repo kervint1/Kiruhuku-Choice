@@ -17,18 +17,25 @@ class _HomeScreenState extends State<HomeScreen> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     final title = Container(
-      decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.black, width: 2))),
-      height: screenHeight * 0.15,
-      width: double.infinity,
-      alignment: Alignment.center,
-      child: Text(
-        "着る服チョイス",
-        style: GoogleFonts.notoSansJp(
-            textStyle: const TextStyle(color: Colors.black, fontSize: 24)),
-        textAlign: TextAlign.center,
-      ),
-    );
+        decoration: const BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.black, width: 2))),
+        height: screenHeight * 0.15,
+        width: double.infinity,
+        alignment: Alignment.center,
+        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Image.asset(
+            'assets/images/huku_title.png',
+            width: 70,
+            height: 70,
+          ),
+          const SizedBox(width: 10),
+          Text(
+            "着る服チョイス",
+            style: GoogleFonts.notoSansJp(
+                textStyle: const TextStyle(color: Colors.black, fontSize: 24)),
+            textAlign: TextAlign.center,
+          ),
+        ]));
 
     final mapCon = Container(
       decoration: const BoxDecoration(
@@ -95,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 100,
             ),
             const SizedBox(width: 8), // ロゴとテキストの間にスペースを追加
-            const Text("服登録ボタン"),
+            const Text("服を登録する", style: TextStyle(fontSize: 20)),
           ],
         ),
       ),
