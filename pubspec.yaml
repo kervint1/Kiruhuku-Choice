@@ -100,3 +100,6 @@ flutter:
   assets:
     - assets/images/huku_touroku-logo.png
     - assets/images/huku_title.png
+    - assets/images/aoi-shatu.jpg
+    - assets/images/seihuku.jpg
+    - assets/images/akai-shatu.jpg

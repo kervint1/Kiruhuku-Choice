@@ -58,11 +58,23 @@ class _HomeScreenState extends State<HomeScreen> {
       case "夏":
         return [Colors.blue[200]!, Colors.blue[400]!, Colors.blue[600]!]; // 夏の色
       case "秋":
-        return [Colors.orange[200]!, Colors.orange[400]!, Colors.orange[600]!]; // 秋の色
+        return [
+          Colors.orange[200]!,
+          Colors.orange[400]!,
+          Colors.orange[600]!
+        ]; // 秋の色
       case "冬":
-        return [Colors.blueGrey[200]!, Colors.blueGrey[400]!, Colors.blueGrey[600]!]; // 冬の色
+        return [
+          Colors.blueGrey[200]!,
+          Colors.blueGrey[400]!,
+          Colors.blueGrey[600]!
+        ]; // 冬の色
       default:
-        return [Colors.grey[300]!, Colors.grey[500]!, Colors.grey[700]!]; // デフォルトの色
+        return [
+          Colors.grey[300]!,
+          Colors.grey[500]!,
+          Colors.grey[700]!
+        ]; // デフォルトの色
     }
   }
 
@@ -149,7 +161,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 children: [
                   TileLayer(
-                    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    urlTemplate:
+                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                   ),
                   MarkerLayer(
                     markers: [
@@ -228,7 +241,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ElevatedButton(
             onPressed: () {
               if (_cityName.isNotEmpty && _cityName != "都市名が取得できません") {
-                context.push('/choice', extra: {'city': _cityName, 'season': _selectedSeason});
+                context.push('/choice',
+                    extra: {'city': _cityName, 'season': _selectedSeason});
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('都市名が取得できませんでした')),
@@ -249,7 +263,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                 alignment: Alignment.center,
                 child: Text(
                   "チョイス！",
@@ -276,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () => context.push('/registerClothes'),
         style: ElevatedButton.styleFrom(
           minimumSize: const Size(300, 100),
-          padding: const EdgeInsets.all(50), // コンテナの余白をゼロに設定
+          padding: const EdgeInsets.all(50),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10), // ボタンの角丸
           ),
