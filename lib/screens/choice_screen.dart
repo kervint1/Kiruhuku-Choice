@@ -81,7 +81,7 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
   Widget build(BuildContext context) {
     // 仮の天気と温度データ
     final String weather = '晴れ';
-    final String temperature = '25°C';
+    final String temperature = '33°C';
 
     return Scaffold(
       appBar: AppBar(
