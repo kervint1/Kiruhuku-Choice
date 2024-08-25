@@ -260,9 +260,9 @@ class _HomeScreenState extends State<HomeScreen> {
             AppBar(
               title: Text(
                 '着る服チョイス',
-                style: GoogleFonts.playfairDisplay(
+                style: GoogleFonts.sawarabiMincho(
                   textStyle: const TextStyle(
-                    fontSize: 25,
+                    fontSize: 30,
                     letterSpacing: 1.2,
                     shadows: [
                       Shadow(
