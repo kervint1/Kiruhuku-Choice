@@ -73,11 +73,14 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 70,
           ),
           const SizedBox(width: 10),
-          const Text(
+          Text(
             "着る服チョイス",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 24,
+            style: GoogleFonts.notoSerif(
+              textStyle: const TextStyle(
+                color: Color(0xFF4A4A4A),
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],
@@ -92,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(20.0), // 角を丸くする半径
+            borderRadius: BorderRadius.circular(20.0),
             child: SizedBox(
               height: screenHeight * 0.25,
               child: FlutterMap(
@@ -118,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         point: _currentPosition,
                         child: const Icon(
                           Icons.location_pin,
-                          color: Colors.red,
+                          color: Color(0xFFEF5350),
                           size: 40,
                         ),
                       ),
@@ -134,7 +137,15 @@ class _HomeScreenState extends State<HomeScreen> {
             items: seasons.map((String season) {
               return DropdownMenuItem<String>(
                 value: season,
-                child: Text(season),
+                child: Text(
+                  season,
+                  style: GoogleFonts.notoSans(
+                    textStyle: const TextStyle(
+                      color: Color(0xFF4A4A4A),
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
               );
             }).toList(),
             onChanged: (String? newValue) {
@@ -156,12 +167,16 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
             ),
             child: Text(
               "チョイス！",
               style: GoogleFonts.notoSansJp(
                 textStyle: const TextStyle(
-                  color: Color.fromARGB(255, 70, 70, 70),
+                  color: Colors.white,
                   fontSize: 24,
                 ),
               ),
@@ -180,10 +195,19 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () => context.push('/registerClothes'),
         style: ElevatedButton.styleFrom(
           minimumSize: const Size(300, 100),
-          disabledForegroundColor: Colors.blue,
-          foregroundColor: const Color.fromARGB(255, 70, 70, 70),
+          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
         ),
-        child: const Text("服登録ボタン"),
+        child: const Text(
+          "服登録ボタン",
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
 
@@ -195,14 +219,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final body = Container(
       decoration: const BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.red, width: 2)),
+        color: Color(0xFFF5F5F5),
       ),
       child: allObject,
     );
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(screenHeight * 0.1), // AppBarの高さ
+        preferredSize: Size.fromHeight(screenHeight * 0.1),
         child: Column(
           children: [
             AppBar(
@@ -210,29 +234,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 '着る服チョイス',
                 style: GoogleFonts.playfairDisplay(
                   textStyle: const TextStyle(
-                    fontSize: 20,
-                    color: Colors.blue,
+                    fontSize: 24,
+                    color: Color(0xFF4A4A4A),
                   ),
                 ),
               ),
               actions: [
                 IconButton(
-                  icon: const Icon(Icons.history),
+                  icon: const Icon(Icons.history, color: Color(0xFF4A4A4A)),
                   onPressed: () => context.push('/history'),
                   iconSize: 50,
                 ),
               ],
-              backgroundColor: Colors.white, // AppBarの背景色
-              elevation: 0, // AppBarの影をなくす
+              backgroundColor: Colors.white,
+              elevation: 0,
             ),
             Container(
-              height: 2, // 区切り線の高さ
-              color: Colors.grey, // 区切り線の色
+              height: 2,
+              color: Colors.grey,
             ),
           ],
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF5F5F5),
       body: body,
     );
   }
