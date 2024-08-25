@@ -196,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Icons.arrow_drop_down_circle, // おしゃれなアイコンを使用
               color: Colors.white, // アイコンの色
             ),
-            dropdownColor: Colors.teal, // ドロップダウンメニューの背景色
+            dropdownColor: const Color.fromRGBO(0, 150, 136, 1), // ドロップダウンメニューの背景色
             style: const TextStyle(
               color: Colors.white, // ドロップダウンの選択時のテキストカラー
             ),
