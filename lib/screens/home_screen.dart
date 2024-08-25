@@ -291,9 +291,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-<<<<<<< HEAD
-      backgroundColor: backgroundColor,
-=======
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -348,7 +345,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       backgroundColor: const Color(0xFFF5F5F5),
->>>>>>> a5fa327d9f3cf6c1bf1c97270562acdebc7c1b52
       body: body,
     );
   }
