@@ -15,6 +15,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   LatLng _currentPosition = LatLng(35.681236, 139.767125); // 東京駅
   String _cityName = "";
+  String _selectedSeason = "春"; // デフォルトの季節
+
+  final List<String> seasons = ["春", "夏", "秋", "冬"];
 
   // マーカーの位置に基づいて都市名を取得
   Future<void> _getCityNameFromCoordinates() async {
@@ -26,11 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks.first;
-
-        // 区名を取得し、必要な部分を抽出
         String cityName = place.locality ?? place.subLocality ?? "";
 
-        // 'City'を削除する処理
         if (cityName.endsWith('City')) {
           cityName = cityName.replaceAll(' City', '');
         }
@@ -73,11 +73,14 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 70,
           ),
           const SizedBox(width: 10),
-          const Text(
+          Text(
             "着る服チョイス",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 24,
+            style: GoogleFonts.notoSerif(
+              textStyle: const TextStyle(
+                color: Color(0xFF4A4A4A),
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],
@@ -92,9 +95,9 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(20.0), // 角を丸くする半径
+            borderRadius: BorderRadius.circular(20.0),
             child: SizedBox(
-              height: screenHeight * 0.3,
+              height: screenHeight * 0.25,
               child: FlutterMap(
                 options: MapOptions(
                   initialCenter: _currentPosition,
@@ -103,7 +106,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     setState(() {
                       _currentPosition = point;
                     });
-                    // 都市名を更新
                     await _getCityNameFromCoordinates();
                   },
                 ),
@@ -120,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         point: _currentPosition,
                         child: const Icon(
                           Icons.location_pin,
-                          color: Colors.red,
+                          color: Color(0xFFEF5350),
                           size: 40,
                         ),
                       ),
@@ -131,10 +133,34 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(height: 20),
+          DropdownButton<String>(
+            value: _selectedSeason,
+            items: seasons.map((String season) {
+              return DropdownMenuItem<String>(
+                value: season,
+                child: Text(
+                  season,
+                  style: GoogleFonts.notoSans(
+                    textStyle: const TextStyle(
+                      color: Color(0xFF4A4A4A),
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                _selectedSeason = newValue!;
+              });
+            },
+          ),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
               if (_cityName.isNotEmpty && _cityName != "都市名が取得できません") {
-                context.push('/choice', extra: _cityName);
+                context.push('/choice',
+                    extra: {'city': _cityName, 'season': _selectedSeason});
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('都市名が取得できませんでした')),
@@ -143,12 +169,16 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
             ),
             child: Text(
               "チョイス！",
               style: GoogleFonts.notoSansJp(
                 textStyle: const TextStyle(
-                  color: Color.fromARGB(255, 70, 70, 70),
+                  color: Colors.white,
                   fontSize: 24,
                 ),
               ),
@@ -167,10 +197,19 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () => context.push('/registerClothes'),
         style: ElevatedButton.styleFrom(
           minimumSize: const Size(300, 100),
-          disabledForegroundColor: Colors.blue,
-          foregroundColor: const Color.fromARGB(255, 70, 70, 70),
+          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
         ),
-        child: const Text("服登録ボタン"),
+        child: const Text(
+          "服登録ボタン",
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
 
@@ -182,14 +221,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final body = Container(
       decoration: const BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.red, width: 2)),
+        color: Color(0xFFF5F5F5),
       ),
       child: allObject,
     );
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(screenHeight * 0.1), // AppBarの高さ
+        preferredSize: Size.fromHeight(screenHeight * 0.1),
         child: Column(
           children: [
             AppBar(
@@ -197,24 +236,33 @@ class _HomeScreenState extends State<HomeScreen> {
                 '着る服チョイス',
                 style: GoogleFonts.playfairDisplay(
                   textStyle: const TextStyle(
-                    fontSize: 20,
-                    color: Colors.blue,
+                    fontSize: 25,
+                    color: Colors.white,
+                    //fontWeight: FontWeight.bold, //太い文字
+                    letterSpacing: 1.2,
+                    shadows: [
+                      Shadow(
+                        offset: Offset(2.0, 2.0), // 影の位置
+                        blurRadius: 3.0, // 影のぼかし半径
+                        color: Color.fromARGB(128, 0, 0, 0), // 影の色
+                      ),
+                    ],
                   ),
                 ),
               ),
               actions: [
                 IconButton(
-                  icon: const Icon(Icons.history),
+                  icon: const Icon(Icons.history, color: Color(0xFF4A4A4A)),
                   onPressed: () => context.push('/history'),
                   iconSize: 50,
                 ),
               ],
-              backgroundColor: Colors.white, // AppBarの背景色
+              backgroundColor: Colors.black, // AppBarの背景色
               elevation: 0, // AppBarの影をなくす
             ),
             Container(
-              height: 2, // 区切り線の高さ
-              color: Colors.grey, // 区切り線の色
+              height: 2,
+              color: Colors.grey,
             ),
           ],
         ),
@@ -272,7 +320,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF5F5F5),
       body: body,
     );
   }
