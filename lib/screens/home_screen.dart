@@ -70,6 +70,32 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
 
+    final Color backgroundColor;
+    final Color buttonColor;
+    final Color textColor = Colors.white;
+
+    switch (_selectedSeason) {
+      case "春":
+        backgroundColor = const Color(0xFFE8F5E9); // Spring - Light Green
+        buttonColor = const Color(0xFF4CAF50); // Green
+        break;
+      case "夏":
+        backgroundColor = const Color(0xFFE0F7FA); // Summer - Light Blue
+        buttonColor = const Color(0xFF00BCD4); // Cyan
+        break;
+      case "秋":
+        backgroundColor = const Color(0xFFFFF3E0); // Autumn - Light Orange
+        buttonColor = const Color(0xFFFF9800); // Orange
+        break;
+      case "冬":
+        backgroundColor = const Color(0xFFECEFF1); // Winter - Light Grey
+        buttonColor = const Color(0xFF607D8B); // Blue Grey
+        break;
+      default:
+        backgroundColor = const Color(0xFFF5F5F5); // Default - Light Grey
+        buttonColor = const Color(0xFF4A4A4A); // Default - Dark Grey
+    }
+
     final title = Container(
       decoration: const BoxDecoration(
         border: Border(
@@ -131,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 80.0,
                         height: 80.0,
                         point: _currentPosition,
-                        child: const Icon(
+                        child: Icon(
                           Icons.location_pin,
                           color: Colors.red,
                           size: 40,
