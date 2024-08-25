@@ -108,7 +108,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 children: [
                   TileLayer(
-                    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    urlTemplate:
+                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                   ),
                   MarkerLayer(
                     markers: [
@@ -147,7 +148,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ElevatedButton(
             onPressed: () {
               if (_cityName.isNotEmpty && _cityName != "都市名が取得できません") {
-                context.push('/choice', extra: {'city': _cityName, 'season': _selectedSeason});
+                context.push('/choice',
+                    extra: {'city': _cityName, 'season': _selectedSeason});
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('都市名が取得できませんでした')),
@@ -210,8 +212,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 '着る服チョイス',
                 style: GoogleFonts.playfairDisplay(
                   textStyle: const TextStyle(
-                    fontSize: 20,
-                    color: Colors.blue,
+                    fontSize: 25,
+                    color: Color.fromARGB(255, 117, 36, 128),
+                    //fontWeight: FontWeight.bold, //太い文字
+                    letterSpacing: 1.2,
+                    shadows: [
+                      Shadow(
+                        offset: Offset(2.0, 2.0), // 影の位置
+                        blurRadius: 3.0, // 影のぼかし半径
+                        color: Color.fromARGB(128, 0, 0, 0), // 影の色
+                      ),
+                    ],
                   ),
                 ),
               ),
