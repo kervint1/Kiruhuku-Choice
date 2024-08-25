@@ -55,6 +55,32 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
 
+    final Color backgroundColor;
+    final Color buttonColor;
+    final Color textColor = Colors.white;
+
+    switch (_selectedSeason) {
+      case "春":
+        backgroundColor = const Color(0xFFE8F5E9); // Spring - Light Green
+        buttonColor = const Color(0xFF4CAF50); // Green
+        break;
+      case "夏":
+        backgroundColor = const Color(0xFFE0F7FA); // Summer - Light Blue
+        buttonColor = const Color(0xFF00BCD4); // Cyan
+        break;
+      case "秋":
+        backgroundColor = const Color(0xFFFFF3E0); // Autumn - Light Orange
+        buttonColor = const Color(0xFFFF9800); // Orange
+        break;
+      case "冬":
+        backgroundColor = const Color(0xFFECEFF1); // Winter - Light Grey
+        buttonColor = const Color(0xFF607D8B); // Blue Grey
+        break;
+      default:
+        backgroundColor = const Color(0xFFF5F5F5); // Default - Light Grey
+        buttonColor = const Color(0xFF4A4A4A); // Default - Dark Grey
+    }
+
     final title = Container(
       decoration: const BoxDecoration(
         border: Border(
@@ -76,8 +102,8 @@ class _HomeScreenState extends State<HomeScreen> {
           Text(
             "着る服チョイス",
             style: GoogleFonts.notoSerif(
-              textStyle: const TextStyle(
-                color: Color(0xFF4A4A4A),
+              textStyle: TextStyle(
+                color: buttonColor,
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
               ),
@@ -120,9 +146,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 80.0,
                         height: 80.0,
                         point: _currentPosition,
-                        child: const Icon(
+                        child: Icon(
                           Icons.location_pin,
-                          color: Color(0xFFEF5350),
+                          color: buttonColor,
                           size: 40,
                         ),
                       ),
@@ -141,8 +167,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text(
                   season,
                   style: GoogleFonts.notoSans(
-                    textStyle: const TextStyle(
-                      color: Color(0xFF4A4A4A),
+                    textStyle: TextStyle(
+                      color: buttonColor,
                       fontSize: 18,
                     ),
                   ),
@@ -169,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-              backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+              backgroundColor: buttonColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
               ),
@@ -177,8 +203,8 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Text(
               "チョイス！",
               style: GoogleFonts.notoSansJp(
-                textStyle: const TextStyle(
-                  color: Colors.white,
+                textStyle: TextStyle(
+                  color: textColor,
                   fontSize: 24,
                 ),
               ),
@@ -197,8 +223,8 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () => context.push('/registerClothes'),
         style: ElevatedButton.styleFrom(
           minimumSize: const Size(300, 100),
-          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-          foregroundColor: Colors.white,
+          backgroundColor: buttonColor,
+          foregroundColor: textColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
@@ -220,8 +246,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
     final body = Container(
-      decoration: const BoxDecoration(
-        color: Color(0xFFF5F5F5),
+      decoration: BoxDecoration(
+        color: backgroundColor,
       ),
       child: allObject,
     );
@@ -237,14 +263,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: GoogleFonts.playfairDisplay(
                   textStyle: const TextStyle(
                     fontSize: 25,
-                    color: Colors.white,
-                    //fontWeight: FontWeight.bold, //太い文字
                     letterSpacing: 1.2,
                     shadows: [
                       Shadow(
-                        offset: Offset(2.0, 2.0), // 影の位置
-                        blurRadius: 3.0, // 影のぼかし半径
-                        color: Color.fromARGB(128, 0, 0, 0), // 影の色
+                        offset: Offset(2.0, 2.0),
+                        blurRadius: 3.0,
+                        color: Color.fromARGB(128, 0, 0, 0),
                       ),
                     ],
                   ),
@@ -257,8 +281,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   iconSize: 50,
                 ),
               ],
-              backgroundColor: Colors.black, // AppBarの背景色
-              elevation: 0, // AppBarの影をなくす
+              backgroundColor: Colors.black26,
+              elevation: 0,
             ),
             Container(
               height: 2,
@@ -267,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: backgroundColor,
       body: body,
     );
   }

@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: '着る服チョイス',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
         textTheme: TextTheme(
           bodyMedium: GoogleFonts.notoSansJp(),
         ),
