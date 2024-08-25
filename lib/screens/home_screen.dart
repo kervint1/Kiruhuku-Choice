@@ -213,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: GoogleFonts.playfairDisplay(
                   textStyle: const TextStyle(
                     fontSize: 25,
-                    color: Color.fromARGB(255, 117, 36, 128),
+                    color: Colors.white,
                     //fontWeight: FontWeight.bold, //太い文字
                     letterSpacing: 1.2,
                     shadows: [
@@ -233,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   iconSize: 50,
                 ),
               ],
-              backgroundColor: Colors.white, // AppBarの背景色
+              backgroundColor: Colors.black, // AppBarの背景色
               elevation: 0, // AppBarの影をなくす
             ),
             Container(
