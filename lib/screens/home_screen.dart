@@ -377,8 +377,62 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: const Text(
+                'メニュー',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('ホーム'),
+              onTap: () {
+                Navigator.pop(context);
+                context.push('/'); // ホーム画面に戻る
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.history),
+              title: const Text('履歴'),
+              onTap: () {
+                Navigator.pop(context);
+                context.push('/history'); // 履歴画面に遷移
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('設定'),
+              onTap: () {
+                Navigator.pop(context);
+                context.push('/settings'); // 設定画面に遷移
+              },
+            ),
+            // 追加：服リスト画面への遷移
+            ListTile(
+              leading: const Icon(Icons.list),
+              title: const Text('服リスト'),
+              onTap: () {
+                Navigator.pop(context);
+                context.push('/clothesList'); // 服リスト画面に遷移
+              },
+            ),
+            // ここに他のメニュー項目も追加可能
+          ],
+        ),
+      ),
       backgroundColor: Colors.white,
       body: body,
     );
   }
 }
+

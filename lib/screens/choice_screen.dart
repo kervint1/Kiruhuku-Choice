@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
 class ChoiceScreen extends StatefulWidget {
-  final String city; // ここで city を定義
-  final String season; // ここで season を定義
+  final String city;
+  final String season;
 
   const ChoiceScreen({super.key, required this.city, required this.season});
 
@@ -15,24 +16,54 @@ class ChoiceScreen extends StatefulWidget {
 }
 
 class _ChoiceScreenState extends State<ChoiceScreen> {
+  String weather = "Loading...";
+  String temperature = "";
   Map<String, Map<String, dynamic>> selectedItems = {};
-  final List<String> categories = [
-    'トップス',
-    'パンツ',
-    'ジャケット・アウター',
-    '靴下',
-    'シューズ',
-    'アクセサリー',
-    'バッグ'
-  ];
 
   @override
   void initState() {
     super.initState();
-    _fetchItems();
+    fetchWeather(widget.city);
+    fetchItems();
   }
 
-  Future<void> _fetchItems() async {
+  Future<void> fetchWeather(String cityName) async {
+    const apiKey = 'e685277d11e2b1fcba6e4fe404fee4db'; // APIキーをここに入力
+    final apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=$apiKey&units=metric';
+
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        String description = data['weather'][0]['description'];
+
+        // 天気条件に基づいて表示する内容を設定
+        setState(() {
+          if (description.contains('clear')) {
+            weather = "晴れ";
+          } else if (description.contains('cloud')) {
+            weather = "くもり";
+          } else if (description.contains('rain')) {
+            weather = "雨";
+          } else {
+            weather = "不明";
+          }
+          temperature = "${data['main']['temp']}°C";
+        });
+      } else {
+        setState(() {
+          weather = "Failed to load data";
+        });
+      }
+    } catch (e) {
+      setState(() {
+        weather = "Error: $e";
+      });
+    }
+  }
+
+  Future<void> fetchItems() async {
     try {
       final Directory appDir = await getApplicationDocumentsDirectory();
       final File dataFile = File('${appDir.path}/clothes_data.json');
@@ -42,13 +73,21 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
         List<dynamic> data = json.decode(contents);
 
         final filteredItems = data.where((item) {
-          return item['seasons'].contains(widget.season); // widget.season を使用
+          return item['seasons'].contains(widget.season);
         }).toList();
 
         final random = Random();
         final selectedItems = <String, Map<String, dynamic>>{};
 
-        for (var category in categories) {
+        for (var category in [
+          'トップス',
+          'パンツ',
+          'ジャケット・アウター',
+          '靴下',
+          'シューズ',
+          'アクセサリー',
+          'バッグ'
+        ]) {
           final itemsInCategory = filteredItems.where((item) => item['type'] == category).toList();
           if (itemsInCategory.isNotEmpty) {
             final randomIndex = random.nextInt(itemsInCategory.length);
@@ -74,15 +113,11 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
   }
 
   void _reselectItems() {
-    _fetchItems();
+    fetchItems();
   }
 
   @override
   Widget build(BuildContext context) {
-    // 仮の天気と温度データ
-    final String weather = '晴れ';
-    final String temperature = '33°C';
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('チョイスリザルト！'),
@@ -98,7 +133,7 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '都市: ${widget.city}',
+                    '都市: ${widget.city}', // 英語の都市名を表示
                     style: const TextStyle(fontSize: 20),
                   ),
                   Text(
