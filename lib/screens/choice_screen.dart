@@ -36,8 +36,19 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+        String description = data['weather'][0]['description'];
+
+        // 天気条件に基づいて表示する内容を設定
         setState(() {
-          weather = data['weather'][0]['description'];
+          if (description.contains('clear')) {
+            weather = "晴れ";
+          } else if (description.contains('cloud')) {
+            weather = "くもり";
+          } else if (description.contains('rain')) {
+            weather = "雨";
+          } else {
+            weather = "不明";
+          }
           temperature = "${data['main']['temp']}°C";
         });
       } else {
