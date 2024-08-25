@@ -22,7 +22,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     },
     {
       'date': '2024-08-21',
-      'description': '赤のスカート',
+      'description': '赤いシャツ',
       'image': 'assets/images/akai-shatu.jpg'
     },
   ];
