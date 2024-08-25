@@ -236,10 +236,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 '着る服チョイス',
                 style: GoogleFonts.playfairDisplay(
                   textStyle: const TextStyle(
-<<<<<<< HEAD
-                    fontSize: 24,
-                    color: Color(0xFF4A4A4A),
-=======
                     fontSize: 25,
                     color: Colors.white,
                     //fontWeight: FontWeight.bold, //太い文字
@@ -251,7 +247,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Color.fromARGB(128, 0, 0, 0), // 影の色
                       ),
                     ],
->>>>>>> 2557bf067c0ca47887bb229b70a17dc71f33aa88
                   ),
                 ),
               ),
@@ -262,13 +257,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   iconSize: 50,
                 ),
               ],
-<<<<<<< HEAD
-              backgroundColor: Colors.white,
-              elevation: 0,
-=======
               backgroundColor: Colors.black, // AppBarの背景色
               elevation: 0, // AppBarの影をなくす
->>>>>>> 2557bf067c0ca47887bb229b70a17dc71f33aa88
             ),
             Container(
               height: 2,
