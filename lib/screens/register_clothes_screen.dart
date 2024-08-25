@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kiruhuku_choice/models/clothing_collection.dart';
-import 'package:kiruhuku_choice/models/clothing_item.dart';
-import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
+import 'package:kiruhuku_choice/models/clothing_item.dart';
+import 'package:kiruhuku_choice/models/clothing_collection.dart';
+import 'package:kiruhuku_choice/models/temperature_model.dart';
 
 class RegisterClothesScreen extends StatefulWidget {
   const RegisterClothesScreen({super.key});
@@ -17,6 +18,7 @@ class RegisterClothesScreen extends StatefulWidget {
 class RegisterClothesScreenState extends State<RegisterClothesScreen> {
   File? _image;
   String? _selectedClothesType;
+  TemperatureModel? _selectedTemperature;
   final ImagePicker _picker = ImagePicker();
   final List<String> _selectedSeasons = [];
   final ClothingCollection _clothingCollection = ClothingCollection();
@@ -38,6 +40,13 @@ class RegisterClothesScreenState extends State<RegisterClothesScreen> {
     '冬',
   ];
 
+  final List<TemperatureModel> _temperatures = [
+    TemperatureModel(label: '0°以下', minTemp: 0),
+    TemperatureModel(label: '10°以上', minTemp: 10),
+    TemperatureModel(label: '20°以上', minTemp: 20),
+    TemperatureModel(label: '30°以上', minTemp: 30),
+  ];
+
   Future<void> _pickImage() async {
     final XFile? pickedFile =
         await _picker.pickImage(source: ImageSource.gallery);
@@ -52,9 +61,10 @@ class RegisterClothesScreenState extends State<RegisterClothesScreen> {
   Future<void> _saveData() async {
     if (_image == null ||
         _selectedClothesType == null ||
-        _selectedSeasons.isEmpty) {
+        _selectedSeasons.isEmpty ||
+        _selectedTemperature == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('画像、服の種類、季節を選択してください')),
+        const SnackBar(content: Text('画像、服の種類、季節、温度を選択してください')),
       );
       return;
     }
@@ -66,8 +76,9 @@ class RegisterClothesScreenState extends State<RegisterClothesScreen> {
         await clothesDir.create(recursive: true);
       }
 
-      final String fileName =
-          '${DateTime.now().millisecondsSinceEpoch}_${_image!.path.split('/').last}';
+      final String fileName = DateTime.now().millisecondsSinceEpoch.toString() +
+          '_' +
+          _image!.path.split('/').last;
       final File savedImage =
           await _image!.copy('${clothesDir.path}/$fileName');
 
@@ -75,6 +86,7 @@ class RegisterClothesScreenState extends State<RegisterClothesScreen> {
         type: _selectedClothesType!,
         seasons: _selectedSeasons,
         imagePath: savedImage.path,
+        temperature: _selectedTemperature!,
       );
 
       _clothingCollection.addClothingItem(newItem);
@@ -87,9 +99,7 @@ class RegisterClothesScreenState extends State<RegisterClothesScreen> {
       }
 
       existingData.add(newItem.toJson());
-      await dataFile.writeAsString(json.encode(existingData));
-
-      debugPrint('保存されたデータ: $existingData');
+      await dataFile.writeAsString(json.encode(existingData), flush: true);
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('服が正常に登録されました')),
@@ -99,6 +109,7 @@ class RegisterClothesScreenState extends State<RegisterClothesScreen> {
         _image = null;
         _selectedClothesType = null;
         _selectedSeasons.clear();
+        _selectedTemperature = null;
       });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -114,6 +125,12 @@ class RegisterClothesScreenState extends State<RegisterClothesScreen> {
       } else {
         _selectedSeasons.remove(season);
       }
+    });
+  }
+
+  void _onTemperatureChanged(TemperatureModel? value) {
+    setState(() {
+      _selectedTemperature = value;
     });
   }
 
@@ -153,45 +170,62 @@ class RegisterClothesScreenState extends State<RegisterClothesScreen> {
           bottom: BorderSide(color: Colors.black, width: 2),
         ),
       ),
-      height: screenHeight * 0.41,
+      height: screenHeight * 0.4,
       width: double.infinity,
       alignment: Alignment.center,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            DropdownButtonFormField<String>(
-              value: _selectedClothesType,
-              decoration: const InputDecoration(
-                labelText: '服の種類を選択',
-                border: OutlineInputBorder(),
+        child: Column(children: [
+          DropdownButtonFormField<String>(
+            value: _selectedClothesType,
+            decoration: const InputDecoration(
+              labelText: '服の種類を選択',
+              border: OutlineInputBorder(),
+            ),
+            items: _clothesTypes.map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                _selectedClothesType = newValue;
+              });
+            },
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  children: _seasons.map((String season) {
+                    return CheckboxListTile(
+                      title: Text(season),
+                      value: _selectedSeasons.contains(season),
+                      onChanged: (bool? value) {
+                        _onSeasonChanged(value, season);
+                      },
+                    );
+                  }).toList(),
+                ),
               ),
-              items: _clothesTypes.map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  _selectedClothesType = newValue;
-                });
-              },
-            ),
-            const SizedBox(height: 16),
-            Column(
-              children: _seasons.map((String season) {
-                return CheckboxListTile(
-                  title: Text(season),
-                  value: _selectedSeasons.contains(season),
-                  onChanged: (bool? value) {
-                    _onSeasonChanged(value, season);
-                  },
-                );
-              }).toList(),
-            ),
-          ],
-        ),
+              const SizedBox(width: 16), // 少しスペースを追加
+              Expanded(
+                child: Column(
+                  children: _temperatures.map((TemperatureModel temp) {
+                    return RadioListTile<TemperatureModel>(
+                      title: Text(temp.label),
+                      value: temp,
+                      groupValue: _selectedTemperature,
+                      onChanged: _onTemperatureChanged,
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+          ),
+        ]),
       ),
     );
 
@@ -216,7 +250,7 @@ class RegisterClothesScreenState extends State<RegisterClothesScreen> {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
-              context.push('/clothesList'); // GoRouterで画面遷移
+              context.push('/clothesList');
             },
             child: const Text('登録された服を表示'),
           ),

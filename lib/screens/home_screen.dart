@@ -111,7 +111,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 children: [
                   TileLayer(
-                    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    urlTemplate:
+                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                   ),
                   MarkerLayer(
                     markers: [
@@ -158,7 +159,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ElevatedButton(
             onPressed: () {
               if (_cityName.isNotEmpty && _cityName != "都市名が取得できません") {
-                context.push('/choice', extra: {'city': _cityName, 'season': _selectedSeason});
+                context.push('/choice',
+                    extra: {'city': _cityName, 'season': _selectedSeason});
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('都市名が取得できませんでした')),
@@ -234,8 +236,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 '着る服チョイス',
                 style: GoogleFonts.playfairDisplay(
                   textStyle: const TextStyle(
+<<<<<<< HEAD
                     fontSize: 24,
                     color: Color(0xFF4A4A4A),
+=======
+                    fontSize: 25,
+                    color: Colors.white,
+                    //fontWeight: FontWeight.bold, //太い文字
+                    letterSpacing: 1.2,
+                    shadows: [
+                      Shadow(
+                        offset: Offset(2.0, 2.0), // 影の位置
+                        blurRadius: 3.0, // 影のぼかし半径
+                        color: Color.fromARGB(128, 0, 0, 0), // 影の色
+                      ),
+                    ],
+>>>>>>> 2557bf067c0ca47887bb229b70a17dc71f33aa88
                   ),
                 ),
               ),
@@ -246,8 +262,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   iconSize: 50,
                 ),
               ],
+<<<<<<< HEAD
               backgroundColor: Colors.white,
               elevation: 0,
+=======
+              backgroundColor: Colors.black, // AppBarの背景色
+              elevation: 0, // AppBarの影をなくす
+>>>>>>> 2557bf067c0ca47887bb229b70a17dc71f33aa88
             ),
             Container(
               height: 2,
