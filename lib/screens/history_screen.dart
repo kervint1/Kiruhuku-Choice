@@ -13,17 +13,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
     {
       'date': '2024-08-23',
       'description': '制服',
-      'image': 'assets/images/uniform.png'
+      'image': 'assets/images/seihuku.jpg'
     },
     {
       'date': '2024-08-22',
       'description': '青のシャツ',
-      'image': 'assets/images/blue_shirt.png'
+      'image': 'assets/images/aoi-shatu.jpg'
     },
     {
       'date': '2024-08-21',
       'description': '赤のスカート',
-      'image': 'assets/images/red_skirt.png'
+      'image': 'assets/images/akai-shatu.jpg'
     },
   ];
 
